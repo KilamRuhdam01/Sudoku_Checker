@@ -10,11 +10,11 @@ pygame.init()
 pygame.font.init() 
 
 # Entire window 
-screen = pygame.display.set_mode((500, 600)) 
+screen = pygame.display.set_mode((500, 570)) 
 
 # Title 
-pygame.display.set_caption("SUDOKU") 
-screen.fill((1,200,34))
+pygame.display.set_caption("Sudoku Input Checker") 
+screen.fill((1,1,3))
 
 
 x = 0
@@ -70,14 +70,14 @@ def draw():
 			if grid[i][j]!= 0: 
 
 				# Fill blue color in already numbered grid 
-				pygame.draw.rect(screen, (0, 153, 153), (i * dif, j * dif, dif + 1, dif + 1)) 
+				pygame.draw.rect(screen, (176, 226, 255), (i * dif, j * dif, dif + 1, dif + 1)) 
 
 				# Fill gird with default numbers specified 
-				text1 = font1.render(str(grid[i][j]), 1, (0, 0, 0)) 
+				text1 = font1.render(str(grid[i][j]), 1, (255, 0, 0)) 
 				screen.blit(text1, (i * dif + 15, j * dif + 15)) 
 			else:
 				pass
-	# Draw lines horizontally and verticallyto form grid		 
+	# Draw lines horizontally and vertically to form grid		 
 	for i in range(10): 
 		if i % 3 == 0 : 
 			thick = 7
@@ -87,7 +87,7 @@ def draw():
 		pygame.draw.line(screen, (0, 0, 0), (i * dif, 0), (i * dif, 500), thick)	 
 
 # Fill value entered in cell	 
-def draw_val(val): 
+def write(val): 
 	text1 = font1.render(str(val), 1, (0, 0, 0)) 
 	screen.blit(text1, (x * dif + 15, y * dif + 15))	 
 
@@ -119,15 +119,11 @@ def valid(m, i, j, val):
 
 # Display instruction for the game 
 def instruction(): 
-	text1 = font2.render("PRESS D TO RESET TO DEFAULT / R TO EMPTY", 1, (0, 0, 0)) 
-	text2 = font2.render("ENTER VALUES AND PRESS ENTER TO VISUALIZE", 1, (0, 0, 0)) 
+	text1 = font2.render("Press Esc to go to default/ R to reset to zero", 1, (0, 0, 0)) 
 	screen.blit(text1, (20, 520))		 
-	screen.blit(text2, (20, 540)) 
+	
 
-# Display options when solved 
-def result(): 
-	text1 = font1.render("FINISHED PRESS R or D", 1, (0, 0, 0)) 
-	screen.blit(text1, (20, 570))	 
+
 run = True
 flag1 = 0
 
@@ -136,10 +132,11 @@ error = 0
 # The loop thats keep the window running 
 while run: 
 	
-	# White color background 
-	screen.fill((20, 200, 100)) 
+	#fill the background
+	screen.fill((255,192,203)) 
+	events = pygame.event.get()
 	# Loop through the events stored in event.get() 
-	for event in pygame.event.get(): 
+	for event in events: 
 		# Quit the game window 
 		if event.type == pygame.QUIT: 
 			run = False
@@ -185,7 +182,7 @@ while run:
 			if event.key == pygame.K_r: 
 				rs = 0
 				error = 0
-				flag2 = 0
+				
 				grid =[ 
 				[0, 0, 0, 0, 0, 0, 0, 0, 0], 
 				[0, 0, 0, 0, 0, 0, 0, 0, 0], 
@@ -198,10 +195,10 @@ while run:
 				[0, 0, 0, 0, 0, 0, 0, 0, 0] 
 				] 
 			# If D is pressed reset the board to default 
-			if event.key == pygame.K_d: 
+			if event.key == pygame.K_ESCAPE: 
 				rs = 0
 				error = 0
-				flag2 = 0
+				
 				grid =[ 
 					[7, 8, 0, 4, 0, 0, 1, 2, 0], 
 					[6, 0, 0, 0, 7, 5, 0, 0, 9], 
@@ -215,11 +212,12 @@ while run:
 				] 
 		
 	if val != 0:			 
-		draw_val(val) 
+		
 		# print(x) 
 		# print(y) 
 		if valid(grid, int(x), int(y), val)== True: 
 			grid[int(x)][int(y)]= val 
+			write(val) 
 			flag1 = 0
 		else: 
 			grid[int(x)][int(y)]= 0
