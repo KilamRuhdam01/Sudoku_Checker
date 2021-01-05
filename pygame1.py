@@ -1,21 +1,38 @@
 # import pygame library 
 import pygame 
 
+#import csv
+
+import csv
+
 # initialise the pygame font 
+pygame.init()
 pygame.font.init() 
 
-# Total window 
+# Entire window 
 screen = pygame.display.set_mode((500, 600)) 
 
-# Title and Icon 
+# Title 
 pygame.display.set_caption("SUDOKU") 
-#img = pygame.image.load('icon.png') 
-#pygame.display.set_icon(img) 
+screen.fill((1,200,34))
+
 
 x = 0
 y = 0
 dif = 500 / 9
 val = 0
+# Get the grid for default sudoku board from csv file
+
+# with open('grid.csv','r') as gr:
+# 	csv_reader = csv.reader(gr)
+# 	grid = list(csv_reader)
+# 	print(grid)
+# for i in range(9):
+# 	inner_list = grid[i]
+# 	inner_list = list(map(int, inner_list))
+# 	print(inner_list)
+# 	grid.append(inner_list)
+
 # Default Sudoku Board. 
 grid =[ 
 		[7, 8, 0, 4, 0, 0, 1, 2, 0], 
@@ -58,6 +75,8 @@ def draw():
 				# Fill gird with default numbers specified 
 				text1 = font1.render(str(grid[i][j]), 1, (0, 0, 0)) 
 				screen.blit(text1, (i * dif + 15, j * dif + 15)) 
+			else:
+				pass
 	# Draw lines horizontally and verticallyto form grid		 
 	for i in range(10): 
 		if i % 3 == 0 : 
@@ -81,7 +100,10 @@ def raise_error2():
 	screen.blit(text1, (20, 570)) 
 
 # Check if the value entered in board is valid 
-def valid(m, i, j, val): 
+def valid(m, i, j, val):
+	if (val >9 or val<=0):
+		print('Enter a value between 1-9')
+		return False
 	for it in range(9): 
 		if m[i][it]== val: 
 			return False
@@ -94,43 +116,6 @@ def valid(m, i, j, val):
 			if m[i][j]== val: 
 				return False
 	return True
-
-# Solves the sudoku board using Backtracking Algorithm 
-def solve(grid, i, j): 
-	
-	while grid[i][j]!= 0: 
-		if i<8: 
-			i+= 1
-		elif i == 8 and j<8: 
-			i = 0
-			j+= 1
-		elif i == 8 and j == 8: 
-			return True
-	pygame.event.pump()	 
-	for it in range(1, 10): 
-		if valid(grid, i, j, it)== True: 
-			grid[i][j]= it 
-			global x, y 
-			x = i 
-			y = j 
-			# white color background\ 
-			screen.fill((255, 255, 255)) 
-			draw() 
-			draw_box() 
-			pygame.display.update() 
-			pygame.time.delay(20) 
-			if solve(grid, i, j)== 1: 
-				return True
-			else: 
-				grid[i][j]= 0
-			# white color background\ 
-			screen.fill((255, 255, 255)) 
-		
-			draw() 
-			draw_box() 
-			pygame.display.update() 
-			pygame.time.delay(50)	 
-	return False
 
 # Display instruction for the game 
 def instruction(): 
@@ -145,14 +130,14 @@ def result():
 	screen.blit(text1, (20, 570))	 
 run = True
 flag1 = 0
-flag2 = 0
+
 rs = 0
 error = 0
 # The loop thats keep the window running 
 while run: 
 	
 	# White color background 
-	screen.fill((255, 255, 255)) 
+	screen.fill((20, 200, 100)) 
 	# Loop through the events stored in event.get() 
 	for event in pygame.event.get(): 
 		# Quit the game window 
@@ -195,8 +180,7 @@ while run:
 				val = 8
 			if event.key == pygame.K_9: 
 				val = 9
-			if event.key == pygame.K_RETURN: 
-				flag2 = 1
+			
 			# If R pressed clear the sudoku board 
 			if event.key == pygame.K_r: 
 				rs = 0
@@ -229,12 +213,7 @@ while run:
 					[1, 2, 0, 0, 0, 7, 4, 0, 0], 
 					[0, 4, 9, 2, 0, 6, 0, 0, 7] 
 				] 
-	if flag2 == 1: 
-		if solve(grid, 0, 0)== False: 
-			error = 1
-		else: 
-			rs = 1
-		flag2 = 0	
+		
 	if val != 0:			 
 		draw_val(val) 
 		# print(x) 
