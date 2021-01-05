@@ -10,7 +10,7 @@ pygame.init()
 pygame.font.init() 
 
 # Entire window 
-screen = pygame.display.set_mode((500, 570)) 
+screen = pygame.display.set_mode((700, 800)) 
 
 # Title 
 pygame.display.set_caption("Sudoku Input Checker") 
@@ -19,7 +19,7 @@ screen.fill((1,1,3))
 
 x = 0
 y = 0
-dif = 500 / 9
+dif = 700 / 9
 val = 0
 # Get the grid for default sudoku board from csv file
 
@@ -35,15 +35,15 @@ val = 0
 
 # Default Sudoku Board. 
 grid =[ 
-		[7, 8, 0, 4, 0, 0, 1, 2, 0], 
-		[6, 0, 0, 0, 7, 5, 0, 0, 9], 
-		[0, 0, 0, 6, 0, 1, 0, 7, 8], 
-		[0, 0, 7, 0, 4, 0, 2, 6, 0], 
-		[0, 0, 1, 0, 5, 0, 9, 3, 0], 
-		[9, 0, 4, 0, 6, 0, 0, 0, 5], 
-		[0, 7, 0, 3, 0, 0, 0, 1, 2], 
-		[1, 2, 0, 0, 0, 7, 4, 0, 0], 
-		[0, 4, 9, 2, 0, 6, 0, 0, 7] 
+		[4, 1, 8, 5, 3, 7, 6, 2, 0], 
+		[7, 6, 9, 8, 0, 1, 4, 3, 5], 
+		[2, 3, 0, 4, 6, 9, 7, 1, 8], 
+		[0, 8, 7, 1, 4, 2, 3, 9, 6], 
+		[9, 2, 3, 7, 8, 0, 1, 5, 4], 
+		[6, 4, 1, 9, 5, 3, 2, 0, 7], 
+		[8, 9, 6, 0, 1, 4, 5, 7, 3], 
+		[1, 5, 4, 3, 7, 8, 0, 6, 2], 
+		[3, 7, 0, 6, 9, 5, 8, 4, 1] 
 	] 
 
 # Load test fonts for future use 
@@ -54,50 +54,50 @@ def get_cord(pos):
 	x = pos[0]//dif 
 	global y 
 	y = pos[1]//dif 
+	print(x,y)
 
 # Highlight the cell selected 
 def draw_box(): 
 	for i in range(2): 
-		pygame.draw.line(screen, (255, 0, 0), (x * dif-3, (y + i)*dif), (x * dif + dif + 3, (y + i)*dif), 7) 
-		pygame.draw.line(screen, (255, 0, 0), ( (x + i)* dif, y * dif ), ((x + i) * dif, y * dif + dif), 7) 
+		pygame.draw.line(screen, (255, 0, 0), (x * dif-3, (y + i)*dif), (x * dif + dif + 3, (y + i)*dif), 5) 
+		pygame.draw.line(screen, (255, 0, 0), ( (x + i)* dif, y * dif ), ((x + i) * dif, y * dif + dif), 5) 
 
 # Function to draw required lines for making Sudoku grid		 
-def draw(): 
+def draw_and_fill(): 
 	# Draw the lines 
 		
 	for i in range (9): 
 		for j in range (9): 
 			if grid[i][j]!= 0: 
 
-				# Fill blue color in already numbered grid 
-				pygame.draw.rect(screen, (176, 226, 255), (i * dif, j * dif, dif + 1, dif + 1)) 
+				# Fill orange color in already numbered grid 
+				pygame.draw.rect(screen, (202,143,66), (i * dif, j * dif, dif + 1, dif + 1)) 
 
 				# Fill gird with default numbers specified 
-				text1 = font1.render(str(grid[i][j]), 1, (255, 0, 0)) 
+				text1 = font1.render(str(grid[i][j]), 1, (255, 255, 255)) 
 				screen.blit(text1, (i * dif + 15, j * dif + 15)) 
-			else:
-				pass
+			
 	# Draw lines horizontally and vertically to form grid		 
 	for i in range(10): 
 		if i % 3 == 0 : 
 			thick = 7
 		else: 
 			thick = 1
-		pygame.draw.line(screen, (0, 0, 0), (0, i * dif), (500, i * dif), thick) 
-		pygame.draw.line(screen, (0, 0, 0), (i * dif, 0), (i * dif, 500), thick)	 
+		pygame.draw.line(screen, (255, 255,255), (0, i * dif), (700, i * dif), thick) 
+		pygame.draw.line(screen, (255,255, 255), (i * dif, 0), (i * dif, 700), thick)	 
 
 # Fill value entered in cell	 
 def write(val): 
-	text1 = font1.render(str(val), 1, (0, 0, 0)) 
+	text1 = font1.render(str(val), 1, (193, 204, 137)) 
 	screen.blit(text1, (x * dif + 15, y * dif + 15))	 
 
 # Raise error when wrong value entered 
 def raise_error1(): 
 	text1 = font1.render("WRONG !!!", 1, (0, 0, 0)) 
-	screen.blit(text1, (20, 570)) 
+	screen.blit(text1, (20, 70)) 
 def raise_error2(): 
 	text1 = font1.render("Wrong !!! Not a valid Key", 1, (0, 0, 0)) 
-	screen.blit(text1, (20, 570)) 
+	screen.blit(text1, (20, 760)) 
 
 # Check if the value entered in board is valid 
 def valid(m, i, j, val):
@@ -119,8 +119,8 @@ def valid(m, i, j, val):
 
 # Display instruction for the game 
 def instruction(): 
-	text1 = font2.render("Press Esc to go to default/ R to reset to zero", 1, (0, 0, 0)) 
-	screen.blit(text1, (20, 520))		 
+	text1 = font1.render("Press Esc to go to default/ R to reset to zero", 1, (0, 0, 0)) 
+	screen.blit(text1, (20, 720))		 
 	
 
 
@@ -133,7 +133,7 @@ error = 0
 while run: 
 	
 	#fill the background
-	screen.fill((255,192,203)) 
+	screen.fill((94,119,3)) 
 	events = pygame.event.get()
 	# Loop through the events stored in event.get() 
 	for event in events: 
@@ -200,16 +200,16 @@ while run:
 				error = 0
 				
 				grid =[ 
-					[7, 8, 0, 4, 0, 0, 1, 2, 0], 
-					[6, 0, 0, 0, 7, 5, 0, 0, 9], 
-					[0, 0, 0, 6, 0, 1, 0, 7, 8], 
-					[0, 0, 7, 0, 4, 0, 2, 6, 0], 
-					[0, 0, 1, 0, 5, 0, 9, 3, 0], 
-					[9, 0, 4, 0, 6, 0, 0, 0, 5], 
-					[0, 7, 0, 3, 0, 0, 0, 1, 2], 
-					[1, 2, 0, 0, 0, 7, 4, 0, 0], 
-					[0, 4, 9, 2, 0, 6, 0, 0, 7] 
-				] 
+					[4, 1, 8, 5, 3, 7, 6, 2, 0], 
+					[7, 6, 9, 8, 0, 1, 4, 3, 5], 
+					[2, 3, 0, 4, 6, 9, 7, 1, 8], 
+					[0, 8, 7, 1, 4, 2, 3, 9, 6], 
+					[9, 2, 3, 7, 8, 0, 1, 5, 4], 
+					[6, 4, 1, 9, 5, 3, 2, 0, 7], 
+					[8, 9, 6, 0, 1, 4, 5, 7, 3], 
+					[1, 5, 4, 3, 7, 8, 0, 6, 2], 
+					[3, 7, 0, 6, 9, 5, 8, 4, 1] 
+					] 
 		
 	if val != 0:			 
 		
@@ -226,9 +226,8 @@ while run:
 		
 	if error == 1: 
 		raise_error1() 
-	if rs == 1: 
-		result()		 
-	draw() 
+			 
+	draw_and_fill() 
 	if flag1 == 1: 
 		draw_box()	 
 	instruction()	 
