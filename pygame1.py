@@ -91,13 +91,6 @@ def write(val):
 	text1 = font1.render(str(val), 1, (193, 204, 137)) 
 	screen.blit(text1, (x * dif + 15, y * dif + 15))	 
 
-# Raise error when wrong value entered 
-def raise_error1(): 
-	text1 = font1.render("WRONG !!!", 1, (0, 0, 0)) 
-	screen.blit(text1, (20, 70)) 
-def raise_error2(): 
-	text1 = font1.render("Wrong !!! Not a valid Key", 1, (0, 0, 0)) 
-	screen.blit(text1, (20, 760)) 
 
 # Check if the value entered in board is valid 
 def valid(m, i, j, val):
@@ -221,11 +214,10 @@ while run:
 			flag1 = 0
 		else: 
 			grid[int(x)][int(y)]= 0
-			raise_error2() 
+			
 		val = 0	
 		
-	if error == 1: 
-		raise_error1() 
+	
 			 
 	draw_and_fill() 
 	if flag1 == 1: 
